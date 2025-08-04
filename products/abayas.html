@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abayas - BDS BUSINESS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- En-tête -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logo-bdsbusiness.png" alt="BDS BUSINESS Logo" class="logo-img">
+                    <span class="logo-text">BDS BUSINESS</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="abayas.html" class="active">Abayas</a></li>
+                    <li><a href="../products/vetements-homme.html">Vêtements Homme</a></li>
+                    <li><a href="../products/ordinateurs.html">Ordinateurs</a></li>
+                    <li><a href="../products/montres.html">Montres</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#compte" class="account"><i class="fas fa-user"></i></a>
+                <a href="#panier" class="cart"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Bannière de catégorie -->
+    <section class="category-banner">
+        <div class="container">
+            <h1>Abayas</h1>
+            <p>Découvrez notre collection exclusive d'abayas élégantes</p>
+        </div>
+    </section>
+
+    <!-- Produits -->
+    <section class="products">
+        <div class="container">
+            <div class="product-filters">
+                <!-- Filtres à implémenter ultérieurement -->
+            </div>
+            <div class="product-grid" id="product-grid">
+                <!-- Les produits seront chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BDS BUSINESS</h3>
+                    <p>Votre partenaire de confiance pour tous vos achats en ligne.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="../index.html">Accueil</a></li>
+                        <li><a href="abayas.html">Abayas</a></li>
+                        <li><a href="../products/vetements-homme.html">Vêtements Homme</a></li>
+                        <li><a href="../products/ordinateurs.html">Ordinateurs</a></li>
+                        <li><a href="../products/montres.html">Montres</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Paiements acceptés</h3>
+                    <div class="payment-methods">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BDS BUSINESS. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Fonction pour charger les produits depuis le fichier JSON
+        async function loadProducts() {
+            try {
+                const response = await fetch('../data/products.json');
+                const data = await response.json();
+                
+                // Filtrer les produits de la catégorie Abayas
+                const abayas = data.products.filter(product => product.category === 'Abayas');
+                
+                const productGrid = document.getElementById('product-grid');
+                
+                if (productGrid && abayas.length > 0) {
+                    let html = '';
+                    abayas.forEach(product => {
+                        html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../${product.images[0]}" alt="${product.name}" 
+                                     onerror="this.src='../images/products/abayas/abaya2.jpeg'"
+                                     loading="lazy">
+                                <div class="product-overlay">
+                                    <a href="product-detail.html?id=${product.id}" class="btn btn-view">Voir détails</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <div class="price-container">
+                                    ${product.oldPrice ? 
+                                        `<span class="old-price">${new Intl.NumberFormat('fr-FR').format(product.oldPrice)} FCFA</span>` : ''
+                                    }
+                                    <span class="price">${new Intl.NumberFormat('fr-FR').format(product.price)} FCFA</span>
+                                    ${product.discount ? 
+                                        `<span class="discount-badge">-${product.discount}%</span>` : ''
+                                    }
+                                </div>
+                                <div class="product-meta">
+                                    <span class="rating">
+                                        ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating))}
+                                        ${product.rating % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                        <span>(${product.reviews})</span>
+                                    </span>
+                                </div>
+                                <button class="btn btn-add-to-cart" data-id="${product.id}">
+                                    <i class="fas fa-cart-plus"></i> Ajouter au panier
+                                </button>
+                            </div>
+                        </div>`;
+                    });
+                    productGrid.innerHTML = html;
+                } else if (productGrid) {
+                    productGrid.innerHTML = '<p class="no-products">Aucune abaya disponible pour le moment.</p>';
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des produits:', error);
+                const productGrid = document.getElementById('product-grid');
+                if (productGrid) {
+                    productGrid.innerHTML = '<p class="error">Erreur lors du chargement des produits. Veuillez réessayer plus tard.</p>';
+                }
+            }
+        }
+
+        // Charger les produits au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>

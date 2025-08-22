@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordinateurs - BDS BUSINESS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logo-bdsbusiness.png" alt="BDS BUSINESS Logo" class="logo-img">
+                    <span class="logo-text">BDS BUSINESS</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="abayas.html">Abayas</a></li>
+                    <li><a href="men.html">Vêtements Homme</a></li>
+                    <li><a href="computers.html" class="active">Ordinateurs</a></li>
+                    <li><a href="watches.html">Montres</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#compte" class="account"><i class="fas fa-user"></i></a>
+                <a href="#panier" class="cart"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="category-banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/banners/computers-banner.jpg');">
+        <div class="container">
+            <h1>Ordinateurs Portables</h1>
+            <p>Découvrez notre sélection d'ordinateurs performants</p>
+        </div>
+    </section>
+
+    <section class="products">
+        <div class="container">
+            <div class="product-filters">
+                <!-- Filtres à implémenter -->
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BDS BUSINESS</h3>
+                    <p>Votre boutique en ligne de confiance pour des produits de qualité.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="../index.html">Accueil</a></li>
+                        <li><a href="abayas.html">Abayas</a></li>
+                        <li><a href="men.html">Vêtements Homme</a></li>
+                        <li><a href="computers.html">Ordinateurs</a></li>
+                        <li><a href="watches.html">Montres</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: contact@bdsbusiness.com</p>
+                    <p>Tél: +225 XX XX XX XX</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BDS BUSINESS. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-floating">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count-floating">0</span>
+    </div>
+
+    <script>
+        // Désactiver l'initialisation automatique de main.js
+        window.preventMainJsAutoInit = true;
+    </script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Charger les produits au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadProducts);
+
+        function loadProducts() {
+            try {
+                // Récupérer les produits de la catégorie Ordinateurs depuis main.js
+                const computers = getProductsByCategory('Ordinateurs');
+                const productGrid = document.getElementById('productGrid');
+                
+                if (!productGrid) {
+                    console.error('Élément productGrid non trouvé');
+                    return;
+                }
+                
+                if (computers.length === 0) {
+                    productGrid.innerHTML = '<p class="no-products">Aucun produit disponible pour le moment.</p>';
+                    return;
+                }
+                
+                // Vérifier si des produits sont disponibles
+                if (!computers || computers.length === 0) {
+                    productGrid.innerHTML = '<p class="no-products">Aucun ordinateur disponible pour le moment.</p>';
+                    return;
+                }
+
+                productGrid.innerHTML = computers.map(computer => `
+                    <div class="product-card" data-id="${computer.id}">
+                        <div class="product-badge">
+                            ${computer.isNew ? '<span class="new-badge">Nouveau</span>' : ''}
+                            ${computer.discount ? `<span class="discount-badge">-${computer.discount}%</span>` : ''}
+                        </div>
+                        <div class="product-image">
+                            <img src="${computer.images && computer.images.length > 0 ? computer.images[0] : '../images/placeholder.jpg'}" 
+                                 alt="${computer.name}" 
+                                 onerror="this.src='../images/placeholder.jpg'"
+                                 loading="lazy">
+                            <div class="product-overlay">
+                                <a href="product-detail.html?id=${computer.id}" class="btn btn-view">Voir détails</a>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${computer.name}</h3>
+                            <div class="product-specs">
+                                ${computer.specs ? `
+                                    ${computer.specs.processeur ? `<p><strong>Processeur:</strong> ${computer.specs.processeur}</p>` : ''}
+                                    ${computer.specs.ram ? `<p><strong>Mémoire RAM:</strong> ${computer.specs.ram}</p>` : ''}
+                                    ${computer.specs.stockage ? `<p><strong>Stockage:</strong> ${computer.specs.stockage}</p>` : ''}
+                                    ${computer.specs.écran ? `<p><strong>Écran:</strong> ${computer.specs.écran}</p>` : ''}
+                                    ${computer.specs.carte_graphique ? `<p><strong>Carte graphique:</strong> ${computer.specs.carte_graphique}</p>` : ''}
+                                ` : ''}
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">${formatPrice(computer.price)} FCFA</span>
+                                ${computer.oldPrice ? `<span class="original-price">${formatPrice(computer.oldPrice)} FCFA</span>` : ''}
+                            </div>
+                            <div class="product-meta">
+                                <span class="rating">
+                                    ${'<i class="fas fa-star"></i>'.repeat(Math.floor(computer.rating || 0))}
+                                    ${(computer.rating || 0) % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                    <span>(${computer.reviews || 0})</span>
+                                </span>
+                            </div>
+                            <button class="btn btn-add-to-cart" data-id="${computer.id}">
+                                <i class="fas fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Ajouter les écouteurs d'événements pour les boutons d'ajout au panier
+                document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.closest('button').dataset.id);
+                        addToCart(productId);
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Erreur lors du chargement des produits:', error);
+                const productGrid = document.getElementById('productGrid');
+                if (productGrid) {
+                    productGrid.innerHTML = '<p class="error">Erreur de chargement des produits. Veuillez réessayer plus tard.</p>';
+                }
+            }
+        }
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function viewProductDetails(productId) {
+            // Rediriger vers la page de détail du produit
+            window.location.href = `product-detail.html?id=${productId}`;
+        }
+
+        function addToCart(productId) {
+            // Implémenter la logique d'ajout au panier
+            console.log('Ajout au panier:', productId);
+            // Mettre à jour le compteur du panier
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            // Mettre à jour le compteur du panier
+            const cartCount = document.querySelector('.cart-count');
+            const cartCountFloating = document.querySelector('.cart-count-floating');
+            
+            // Ici, vous devriez récupérer le nombre réel d'articles dans le panier
+            const count = 0; // Remplacer par la logique réelle
+            
+            if (cartCount) cartCount.textContent = count;
+            if (cartCountFloating) {
+                cartCountFloating.textContent = count;
+                cartCountFloating.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>

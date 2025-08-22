@@ -42,24 +42,370 @@ async function initApp() {
     updateCartCount();
 }
 
-// Récupérer les produits depuis le fichier JSON
-async function fetchProducts() {
-    try {
-        const response = await fetch('../data/products.json');
-        const data = await response.json();
-        appState.products = data.products;
-        appState.filteredProducts = [...appState.products];
-    } catch (error) {
-        console.error('Erreur lors du chargement des produits:', error);
-        // Utiliser des données par défaut en cas d'erreur
-        appState.products = getDefaultProducts();
-        appState.filteredProducts = [...appState.products];
-    }
-}
+// Données des produits
+let products = [
+    // ==================== MONTRES ====================
+    {
+        id: 16,
+        name: "Montre connectée Elite Pro",
+        category: "Montres",
+        price: 129900,
+        oldPrice: 149900,
+        discount: 13,
+        rating: 4.8,
+        reviews: 94,
+        images: ["images/products/watches/montre-connectee-elite.jpg"],
+        colors: ["Noir", "Argent", "Or rose"],
+        features: ["Écran AMOLED 1.4\"", "Autonomie 7 jours", "GPS intégré", "Paiement sans contact"],
+        stock: 15,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "2 ans",
+        featured: true
+    },
+    {
+        id: 17,
+        name: "Montre automatique classique",
+        category: "Montres",
+        price: 249900,
+        rating: 4.9,
+        reviews: 127,
+        images: ["images/products/watches/montre-automatique.jpg"],
+        colors: ["Acier", "Or rose", "Noir"],
+        features: ["Mécanisme automatique suisse", "Étanchéité 50m", "Cadran saphir", "Bracelet cuir véritable"],
+        stock: 8,
+        seller: "BDS LUXE",
+        shipping: "Livraison express gratuite",
+        warranty: "5 ans"
+    },
+    {
+        id: 18,
+        name: "Smartwatch Sport X2",
+        category: "Montres",
+        price: 89900,
+        rating: 4.5,
+        reviews: 68,
+        images: ["images/products/watches/smartwatch-sport.jpg"],
+        colors: ["Noir/Rouge", "Bleu/Noir", "Blanc"],
+        features: ["Résistance à l'eau 100m", "Suivi activité 24/7", "Écran tactile couleur", "Notifications smartphone"],
+        stock: 22,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "1 an",
+        isNew: true
+    },
+    {
+        id: 19,
+        name: "Chronographe en or",
+        category: "Montres",
+        price: 599900,
+        oldPrice: 749900,
+        discount: 20,
+        rating: 5.0,
+        reviews: 42,
+        images: ["images/products/watches/chrono-or.jpg"],
+        colors: ["Or jaune", "Or rose", "Acier/Or"],
+        features: ["Mouvement mécanique automatique", "Boîtier en or 18K", "Fond transparent saphir", "Étanchéité 100m"],
+        stock: 3,
+        seller: "BDS LUXE",
+        shipping: "Livraison sécurisée",
+        warranty: "10 ans",
+        featured: true
+    },
+    {
+        id: 20,
+        name: "Montre minimaliste élégante",
+        category: "Montres",
+        price: 89900,
+        rating: 4.6,
+        reviews: 56,
+        images: ["images/products/watches/montre-minimaliste.jpg"],
+        colors: ["Blanc", "Noir", "Bleu marine"],
+        features: ["Mouvement à quartz suisse", "Cadran émaillé", "Bracelet en cuir pleine fleur", "Épaisseur 7mm"],
+        stock: 18,
+        seller: "BDS LUXE",
+        shipping: "Livraison gratuite",
+        warranty: "2 ans"
+    },
 
-// Données de produits par défaut
-function getDefaultProducts() {
-    return [
+    // ==================== ORDINATEURS ====================
+    {
+        id: 11,
+        name: "MacBook Pro M2 14\"",
+        category: "Ordinateurs",
+        price: 1499900,
+        oldPrice: 1599900,
+        discount: 6,
+        rating: 4.9,
+        reviews: 87,
+        images: ["images/products/computers/macbook-pro-m2.jpg"],
+        specs: {
+            processeur: "Apple M2 Pro",
+            ram: "16 Go",
+            stockage: "512 Go SSD",
+            écran: "14.2\" Liquid Retina XDR"
+        },
+        stock: 7,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "1 an",
+        featured: true
+    },
+    {
+        id: 12,
+        name: "Dell XPS 15",
+        category: "Ordinateurs",
+        price: 1299900,
+        rating: 4.7,
+        reviews: 64,
+        images: ["images/products/computers/dell-xps-15.jpg"],
+        specs: {
+            processeur: "Intel Core i7-12700H",
+            ram: "16 Go",
+            stockage: "1 To SSD",
+            écran: "15.6\" 4K UHD+"
+        },
+        stock: 5,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "2 ans"
+    },
+    {
+        id: 13,
+        name: "Asus ROG Zephyrus G14",
+        category: "Ordinateurs",
+        price: 1599900,
+        oldPrice: 1749900,
+        discount: 9,
+        rating: 4.8,
+        reviews: 72,
+        images: ["images/products/computers/asus-rog-g14.jpg"],
+        specs: {
+            processeur: "AMD Ryzen 9 6900HS",
+            ram: "32 Go",
+            stockage: "1 To SSD",
+            écran: "14\" QHD 165Hz",
+            carte_graphique: "NVIDIA RTX 3060"
+        },
+        stock: 4,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "2 ans",
+        featured: true
+    },
+    {
+        id: 14,
+        name: "HP Pavilion Gaming 15",
+        category: "Ordinateurs",
+        price: 899900,
+        rating: 4.3,
+        reviews: 45,
+        images: ["images/products/computers/hp-pavilion-gaming.jpg"],
+        specs: {
+            processeur: "Intel Core i5-12500H",
+            ram: "8 Go",
+            stockage: "512 Go SSD",
+            écran: "15.6\" FHD 144Hz",
+            carte_graphique: "NVIDIA GTX 1650"
+        },
+        stock: 12,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "1 an"
+    },
+    {
+        id: 15,
+        name: "Microsoft Surface Laptop 5",
+        category: "Ordinateurs",
+        price: 1199900,
+        oldPrice: 1299900,
+        discount: 8,
+        rating: 4.6,
+        reviews: 53,
+        images: ["images/products/computers/surface-laptop-5.jpg"],
+        specs: {
+            processeur: "Intel Core i7-1255U",
+            ram: "16 Go",
+            stockage: "512 Go SSD",
+            écran: "13.5\" Touch PixelSense"
+        },
+        stock: 9,
+        seller: "BDS TECH",
+        shipping: "Livraison gratuite",
+        warranty: "1 an",
+        isNew: true
+    },
+
+    // ==================== VÊTEMENTS HOMME ====================
+    {
+        id: 6,
+        name: "Costume 3 pièces bleu marine",
+        category: "Vêtements Homme",
+        price: 59900,
+        oldPrice: 74900,
+        discount: 20,
+        rating: 4.8,
+        reviews: 47,
+        images: ["images/products/men/costume-bleu-marine.jpg"],
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Bleu marine", "Noir", "Anthracite"],
+        description: "Costume 3 pièces en laine peignée. Veste ajustée, pantalon droit, gilet assorti. Parfait pour les occasions formelles.",
+        stock: 8,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite",
+        featured: true
+    },
+    {
+        id: 7,
+        name: "Chemise slim blanche",
+        category: "Vêtements Homme",
+        price: 14900,
+        rating: 4.6,
+        reviews: 32,
+        images: ["images/products/men/chemise-blanche.jpg"],
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Blanc", "Bleu clair", "Rose pâle"],
+        description: "Chemise homme en coton égyptien. Coupe slim, col classique. Idéale pour un look professionnel ou décontracté.",
+        stock: 25,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite"
+    },
+    {
+        id: 8,
+        name: "Pantalon chino beige",
+        category: "Vêtements Homme",
+        price: 21900,
+        oldPrice: 25900,
+        discount: 15,
+        rating: 4.4,
+        reviews: 28,
+        images: ["images/products/men/pantalon-chino.jpg"],
+        sizes: ["38", "40", "42", "44", "46"],
+        colors: ["Beige", "Bleu marine", "Noir"],
+        description: "Pantalon chino en coton stretch. Coupe droite, passepoil sur les poches arrière. Polyvalent pour toutes les occasions.",
+        stock: 18,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite"
+    },
+    {
+        id: 9,
+        name: "Veste en cuir marron",
+        category: "Vêtements Homme",
+        price: 89900,
+        oldPrice: 109900,
+        discount: 18,
+        rating: 4.9,
+        reviews: 63,
+        images: ["images/products/men/veste-cuir.jpg"],
+        sizes: ["M", "L", "XL", "XXL"],
+        colors: ["Marron", "Noir", "Bordeaux"],
+        description: "Veste en cuir véritable d'une qualité exceptionnelle. Doublure en soie, coupe ajustée. Un classique intemporel.",
+        stock: 6,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite",
+        featured: true
+    },
+    {
+        id: 10,
+        name: "Pull en laine gris",
+        category: "Vêtements Homme",
+        price: 28900,
+        rating: 4.5,
+        reviews: 37,
+        images: ["images/products/men/pull-laine.jpg"],
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Gris chiné", "Bleu marine", "Bordeaux"],
+        description: "Pull en laine mérinos, chaud et confortable. Col rond, coupe régulière. Parfait pour les saisons froides.",
+        stock: 14,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite"
+    },
+
+    // ==================== ABYAS ====================
+    {
+        id: 1,
+        name: "Abaya classique noire brodée or",
+        category: "Abayas",
+        price: 34900,
+        oldPrice: 39900,
+        discount: 13,
+        rating: 4.7,
+        reviews: 42,
+        images: ["images/products/abayas/ab.jpeg"],
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Noir", "Bleu nuit", "Bordeaux"],
+        description: "Abaya élégante en crêpe de qualité supérieure avec broderies dorées traditionnelles. Coupe fluide avec manches larges et capuche amovible.",
+        stock: 15,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite",
+        featured: true,
+        isNew: true
+    },
+    {
+        id: 2,
+        name: "Abaya moderne à motifs floraux",
+        category: "Abayas",
+        price: 29900,
+        rating: 4.5,
+        reviews: 18,
+        images: ["images/products/abayas/abaya2.jpeg"],
+        sizes: ["XS", "S", "M", "L", "XL"],
+        colors: ["Noir/Blanc", "Bleu poudre/Beige"],
+        description: "Abaya légère avec motifs floraux délicats. Tissu en coton respirant, idéal pour une utilisation quotidienne.",
+        stock: 12,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite",
+        isNew: true
+    },
+    {
+        id: 3,
+        name: "Abaya de luxe en soie avec cristaux",
+        category: "Abayas",
+        price: 89900,
+        oldPrice: 99900,
+        discount: 10,
+        rating: 4.9,
+        reviews: 31,
+        images: ["images/products/abayas/abaya3.jpeg"],
+        sizes: ["S", "M", "L"],
+        colors: ["Noir", "Bleu marine", "Vert émeraude"],
+        description: "Abaya haut de gamme en soie naturelle avec incrustations de cristaux. Doublure en satin, fermeture à boutons cachés.",
+        stock: 5,
+        seller: "BDS FASHION",
+        shipping: "Livraison express gratuite",
+        featured: true
+    },
+    {
+        id: 4,
+        name: "Abaya sport confortable",
+        category: "Abayas",
+        price: 24900,
+        rating: 4.3,
+        reviews: 27,
+        images: ["images/products/abayas/abaya4.jpeg"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["Noir", "Gris anthracite", "Bleu marine"],
+        description: "Abaya en tissu stretch respirant, parfaite pour une utilisation quotidienne. Design simple avec poches latérales et capuche.",
+        stock: 20,
+        seller: "BDS FASHION",
+        shipping: "Livraison gratuite"
+    },
+    {
+        id: 5,
+        name: "Abaya de mariage en dentelle",
+        category: "Abayas",
+        price: 129900,
+        rating: 5.0,
+        reviews: 9,
+        images: ["images/products/abayas/abaya5.jpeg"],
+        sizes: ["S", "M", "L"],
+        colors: ["Blanc ivoire", "Or pâle", "Rose poudré"],
+        description: "Abaya de cérémonie en dentelle française avec perles et broderies raffinées. Doublure en satin, traîne amovible.",
+        stock: 3,
+        seller: "BDS FASHION",
+        shipping: "Livraison express gratuite",
+        featured: true
+    },
         {
             id: 1,
             name: "Abaya élégante noire brodée",
@@ -213,11 +559,31 @@ function getDefaultProducts() {
             isNew: true
         }
     ];
-}
+
+// Initialiser les produits dans l'état global
+appState.products = [...products];
+appState.filteredProducts = [...products];
 
 // Récupérer les produits en vedette
 function getFeaturedProducts() {
-    return appState.products.filter(product => product.featured === true);
+    return products.filter(product => product.featured === true);
+}
+
+// Fonction pour obtenir les produits par catégorie
+function getProductsByCategory(category) {
+    return products.filter(product => product.category === category);
+}
+
+// Récupérer les produits depuis les données locales (fonction gardée pour compatibilité)
+async function fetchProducts() {
+    try {
+        appState.products = [...products];
+        appState.filteredProducts = [...products];
+    } catch (error) {
+        console.error('Erreur lors du chargement des produits:', error);
+        appState.products = [];
+        appState.filteredProducts = [];
+    }
 }
 
 // Configurer les écouteurs d'événements
@@ -931,6 +1297,12 @@ function formatPrice(price) {
 
 // Initialiser l'application au chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
+    // Ne pas initialiser si désactivé explicitement
+    if (window.preventMainJsAutoInit) {
+        console.log('Initialisation automatique de main.js désactivée pour cette page');
+        return;
+    }
+    
     initApp();
     
     // Gérer le défilement du header

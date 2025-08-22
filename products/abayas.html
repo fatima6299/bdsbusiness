@@ -21,9 +21,9 @@
                 <ul>
                     <li><a href="../index.html">Accueil</a></li>
                     <li><a href="abayas.html" class="active">Abayas</a></li>
-                    <li><a href="../products/vetements-homme.html">Vêtements Homme</a></li>
-                    <li><a href="../products/ordinateurs.html">Ordinateurs</a></li>
-                    <li><a href="../products/montres.html">Montres</a></li>
+                    <li><a href="men.html">Vêtements Homme</a></li>
+                    <li><a href="computers.html">Ordinateurs</a></li>
+                    <li><a href="watches.html">Montres</a></li>
                     <li><a href="../contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -35,21 +35,113 @@
     </header>
 
     <!-- Bannière de catégorie -->
-    <section class="category-banner">
+    <section class="category-banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/products/abayas/abaya3.jpeg');">
         <div class="container">
             <h1>Abayas</h1>
-            <p>Découvrez notre collection exclusive d'abayas élégantes</p>
+            <p>Découvrez notre collection exclusive d'abayas élégantes et raffinées</p>
         </div>
     </section>
 
-    <!-- Produits -->
+    <!-- Produits et filtres -->
     <section class="products">
         <div class="container">
-            <div class="product-filters">
-                <!-- Filtres à implémenter ultérieurement -->
+            <div class="filters-container">
+                <div class="filters-toggle">
+                    <button id="filtersToggle">
+                        <i class="fas fa-sliders-h"></i> Filtres
+                    </button>
+                    <div class="sort-options">
+                        <label for="sortBy">Trier par :</label>
+                        <select id="sortBy" class="form-control">
+                            <option value="featured">En vedette</option>
+                            <option value="price-asc">Prix croissant</option>
+                            <option value="price-desc">Prix décroissant</option>
+                            <option value="newest">Nouveautés</option>
+                            <option value="top-rated">Mieux notés</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filters-panel" id="filtersPanel">
+                    <div class="filter-section">
+                        <h4>Prix</h4>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" id="minPrice" placeholder="Min" min="0">
+                                <span>–</span>
+                                <input type="number" id="maxPrice" placeholder="Max" min="0">
+                            </div>
+                            <div class="price-slider">
+                                <div id="priceSlider"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Tailles</h4>
+                        <div class="size-filters">
+                            <label class="size-option">
+                                <input type="checkbox" name="size" value="S">
+                                <span>S</span>
+                            </label>
+                            <label class="size-option">
+                                <input type="checkbox" name="size" value="M">
+                                <span>M</span>
+                            </label>
+                            <label class="size-option">
+                                <input type="checkbox" name="size" value="L">
+                                <span>L</span>
+                            </label>
+                            <label class="size-option">
+                                <input type="checkbox" name="size" value="XL">
+                                <span>XL</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Couleurs</h4>
+                        <div class="color-filters">
+                            <label class="color-option">
+                                <input type="checkbox" name="color" value="Noir">
+                                <span class="color-swatch" style="background-color: #000000;"></span>
+                                <span>Noir</span>
+                            </label>
+                            <label class="color-option">
+                                <input type="checkbox" name="color" value="Blanc">
+                                <span class="color-swatch" style="background-color: #ffffff; border: 1px solid #ddd;"></span>
+                                <span>Blanc</span>
+                            </label>
+                            <label class="color-option">
+                                <input type="checkbox" name="color" value="Bleu">
+                                <span class="color-swatch" style="background-color: #1e40af;"></span>
+                                <span>Bleu</span>
+                            </label>
+                            <label class="color-option">
+                                <input type="checkbox" name="color" value="Rouge">
+                                <span class="color-swatch" style="background-color: #b91c1c;"></span>
+                                <span>Rouge</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button id="applyFilters" class="btn btn-primary">Appliquer les filtres</button>
+                        <button id="resetFilters" class="btn btn-link">Réinitialiser</button>
+                    </div>
+                </div>
             </div>
+            
+            <div class="products-header">
+                <p id="productsCount">Chargement des produits...</p>
+            </div>
+            
             <div class="product-grid" id="product-grid">
                 <!-- Les produits seront chargés dynamiquement -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- La pagination sera gérée en JavaScript -->
             </div>
         </div>
     </section>
@@ -86,71 +178,89 @@
         </div>
     </footer>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
+    <script>
+        // Désactiver l'initialisation automatique de main.js
+        window.preventMainJsAutoInit = true;
+    </script>
+    <script src="../js/main.js"></script>
     <script src="../js/main.js"></script>
     <script>
-        // Fonction pour charger les produits depuis le fichier JSON
-        async function loadProducts() {
-            try {
-                const response = await fetch('../data/products.json');
-                const data = await response.json();
-                
-                // Filtrer les produits de la catégorie Abayas
-                const abayas = data.products.filter(product => product.category === 'Abayas');
-                
-                const productGrid = document.getElementById('product-grid');
-                
-                if (productGrid && abayas.length > 0) {
-                    let html = '';
-                    abayas.forEach(product => {
-                        html += `
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="../${product.images[0]}" alt="${product.name}" 
-                                     onerror="this.src='../images/products/abayas/abaya2.jpeg'"
-                                     loading="lazy">
-                                <div class="product-overlay">
-                                    <a href="product-detail.html?id=${product.id}" class="btn btn-view">Voir détails</a>
-                                </div>
+        // Fonction pour afficher les produits de la catégorie Abayas
+        function displayAbayas() {
+            // Récupérer les produits de la catégorie Abayas
+            const abayas = getProductsByCategory('Abayas');
+            const productGrid = document.getElementById('product-grid');
+            
+            if (productGrid && abayas.length > 0) {
+                let html = '';
+                abayas.forEach(product => {
+                    // Vérifier si le produit a des images
+                    const imagePath = product.images && product.images.length > 0 ? 
+                        `../${product.images[0]}` : 
+                        '../images/products/abayas/abaya2.jpeg';
+
+                    html += `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="${imagePath}" alt="${product.name}" 
+                                 onerror="this.src='../images/products/abayas/abaya2.jpeg'"
+                                 loading="lazy">
+                            <div class="product-overlay">
+                                <a href="product-detail.html?id=${product.id}" class="btn btn-view">Voir détails</a>
                             </div>
-                            <div class="product-info">
-                                <h3>${product.name}</h3>
-                                <div class="price-container">
-                                    ${product.oldPrice ? 
-                                        `<span class="old-price">${new Intl.NumberFormat('fr-FR').format(product.oldPrice)} FCFA</span>` : ''
-                                    }
-                                    <span class="price">${new Intl.NumberFormat('fr-FR').format(product.price)} FCFA</span>
-                                    ${product.discount ? 
-                                        `<span class="discount-badge">-${product.discount}%</span>` : ''
-                                    }
-                                </div>
-                                <div class="product-meta">
-                                    <span class="rating">
-                                        ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating))}
-                                        ${product.rating % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
-                                        <span>(${product.reviews})</span>
-                                    </span>
-                                </div>
-                                <button class="btn btn-add-to-cart" data-id="${product.id}">
-                                    <i class="fas fa-cart-plus"></i> Ajouter au panier
-                                </button>
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <div class="price-container">
+                                ${product.oldPrice ? 
+                                    `<span class="old-price">${new Intl.NumberFormat('fr-FR').format(product.oldPrice)} FCFA</span>` : ''
+                                }
+                                <span class="price">${new Intl.NumberFormat('fr-FR').format(product.price)} FCFA</span>
+                                ${product.discount ? 
+                                    `<span class="discount-badge">-${product.discount}%</span>` : ''
+                                }
                             </div>
-                        </div>`;
+                            <div class="product-meta">
+                                <span class="rating">
+                                    ${'<i class="fas fa-star"></i>'.repeat(Math.floor(product.rating || 0))}
+                                    ${(product.rating || 0) % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                    <span>(${product.reviews || 0})</span>
+                                </span>
+                            </div>
+                            <button class="btn btn-add-to-cart" data-id="${product.id}">
+                                <i class="fas fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                        </div>
+                    </div>`;
+                });
+                productGrid.innerHTML = html;
+                
+                // Ajouter les écouteurs d'événements pour les boutons d'ajout au panier
+                document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.closest('button').dataset.id);
+                        addToCart(productId);
                     });
-                    productGrid.innerHTML = html;
-                } else if (productGrid) {
-                    productGrid.innerHTML = '<p class="no-products">Aucune abaya disponible pour le moment.</p>';
-                }
-            } catch (error) {
-                console.error('Erreur lors du chargement des produits:', error);
-                const productGrid = document.getElementById('product-grid');
-                if (productGrid) {
-                    productGrid.innerHTML = '<p class="error">Erreur lors du chargement des produits. Veuillez réessayer plus tard.</p>';
-                }
+                });
+            } else if (productGrid) {
+                productGrid.innerHTML = '<p class="no-products">Aucune abaya disponible pour le moment.</p>';
             }
         }
 
+        // Désactiver l'initialisation automatique de main.js
+        window.preventMainJsAutoInit = true;
+        
         // Charger les produits au chargement de la page
-        document.addEventListener('DOMContentLoaded', loadProducts);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Afficher les abayas
+            displayAbayas();
+            
+            // Mettre à jour le compteur du panier
+            updateCartCount();
+        });
     </script>
 </body>
 </html>

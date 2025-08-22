@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montres - BDS BUSINESS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logo-bdsbusiness.png" alt="BDS BUSINESS Logo" class="logo-img">
+                    <span class="logo-text">BDS BUSINESS</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="abayas.html">Abayas</a></li>
+                    <li><a href="men.html">Vêtements Homme</a></li>
+                    <li><a href="computers.html">Ordinateurs</a></li>
+                    <li><a href="watches.html" class="active">Montres</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#compte" class="account"><i class="fas fa-user"></i></a>
+                <a href="#panier" class="cart"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="category-banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/banners/watches-banner.jpg');">
+        <div class="container">
+            <h1>Montres</h1>
+            <p>Découvrez notre collection de montres élégantes</p>
+        </div>
+    </section>
+
+    <section class="products">
+        <div class="container">
+            <div class="product-filters">
+                <!-- Filtres à implémenter -->
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BDS BUSINESS</h3>
+                    <p>Votre boutique en ligne de confiance pour des produits de qualité.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="../index.html">Accueil</a></li>
+                        <li><a href="abayas.html">Abayas</a></li>
+                        <li><a href="men.html">Vêtements Homme</a></li>
+                        <li><a href="computers.html">Ordinateurs</a></li>
+                        <li><a href="watches.html">Montres</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: contact@bdsbusiness.com</p>
+                    <p>Tél: +225 XX XX XX XX</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BDS BUSINESS. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cart-floating">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count-floating">0</span>
+    </div>
+
+    <!-- Désactiver l'initialisation automatique de main.js -->
+    <script>
+        window.preventMainJsAutoInit = true;
+    </script>
+    <!-- Charger main.js -->
+    <script src="../js/main.js"></script>
+    <!-- Script spécifique à la page -->
+    <script>
+        // Charger les produits au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadProducts);
+
+        function loadProducts() {
+            try {
+                // Récupérer les produits de la catégorie Montres depuis main.js
+                const watches = getProductsByCategory('Montres');
+                const productGrid = document.getElementById('productGrid');
+                
+                if (!productGrid) {
+                    console.error('Élément productGrid non trouvé');
+                    return;
+                }
+                
+                // Vérifier si des produits sont disponibles
+                if (!watches || watches.length === 0) {
+                    productGrid.innerHTML = '<p class="no-products">Aucune montre disponible pour le moment.</p>';
+                    return;
+                }
+
+                productGrid.innerHTML = watches.map(watch => `
+                    <div class="product-card" data-id="${watch.id}">
+                        <div class="product-badge">
+                            ${watch.isNew ? '<span class="new-badge">Nouveau</span>' : ''}
+                            ${watch.discount ? `<span class="discount-badge">-${watch.discount}%</span>` : ''}
+                        </div>
+                        <div class="product-image">
+                            <img src="${watch.images && watch.images.length > 0 ? watch.images[0] : '../images/placeholder.jpg'}" 
+                                 alt="${watch.name}" 
+                                 onerror="this.src='../images/placeholder.jpg'"
+                                 loading="lazy">
+                            <div class="product-overlay">
+                                <a href="product-detail.html?id=${watch.id}" class="btn btn-view">Voir détails</a>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${watch.name}</h3>
+                            <div class="product-specs">
+                                ${watch.brand ? `<p><strong>Marque:</strong> ${watch.brand}</p>` : ''}
+                                ${watch.type ? `<p><strong>Type:</strong> ${watch.type}</p>` : ''}
+                                ${watch.movement ? `<p><strong>Mouvement:</strong> ${watch.movement}</p>` : ''}
+                                ${watch.waterResistant ? `<p><strong>Étanchéité:</strong> ${watch.waterResistant}</p>` : ''}
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">${formatPrice(watch.price)} FCFA</span>
+                                ${watch.oldPrice ? `<span class="original-price">${formatPrice(watch.oldPrice)} FCFA</span>` : ''}
+                            </div>
+                            <div class="product-meta">
+                                <span class="rating">
+                                    ${'<i class="fas fa-star"></i>'.repeat(Math.floor(watch.rating || 0))}
+                                    ${(watch.rating || 0) % 1 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                    <span>(${watch.reviews || 0})</span>
+                                </span>
+                            </div>
+                            <button class="btn btn-add-to-cart" data-id="${watch.id}">
+                                <i class="fas fa-cart-plus"></i> Ajouter au panier
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Ajouter les écouteurs d'événements pour les boutons d'ajout au panier
+                document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.closest('button').dataset.id);
+                        addToCart(productId);
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Erreur lors du chargement des produits:', error);
+                const productGrid = document.getElementById('productGrid');
+                if (productGrid) {
+                    productGrid.innerHTML = '<p class="error">Erreur de chargement des produits. Veuillez réessayer plus tard.</p>';
+                }
+            }
+        }
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function viewProductDetails(productId) {
+            // Rediriger vers la page de détail du produit
+            window.location.href = `product-detail.html?id=${productId}`;
+        }
+
+        function addToCart(productId) {
+            // Implémenter la logique d'ajout au panier
+            console.log('Ajout au panier:', productId);
+            // Mettre à jour le compteur du panier
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            // Mettre à jour le compteur du panier
+            const cartCount = document.querySelector('.cart-count');
+            const cartCountFloating = document.querySelector('.cart-count-floating');
+            
+            // Ici, vous devriez récupérer le nombre réel d'articles dans le panier
+            const count = 0; // Remplacer par la logique réelle
+            
+            if (cartCount) cartCount.textContent = count;
+            if (cartCountFloating) {
+                cartCountFloating.textContent = count;
+                cartCountFloating.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+            // Fonction pour formater le prix
+            function formatPrice(price) {
+                return new Intl.NumberFormat('fr-FR').format(price);
+            }
+
+            // Fonction pour afficher les détails d'un produit
+            function viewProductDetails(productId) {
+                window.location.href = `product-detail.html?id=${productId}`;
+            }
+
+            // Fonction pour ajouter un produit au panier
+            function addToCart(productId) {
+                // Récupérer le panier depuis le stockage local ou en créer un nouveau
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                // Vérifier si le produit est déjà dans le panier
+                const existingItem = cart.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    // Incrémenter la quantité si le produit est déjà dans le panier
+                    existingItem.quantity += 1;
+                } else {
+                    // Ajouter le produit au panier avec une quantité de 1
+                    cart.push({
+                        id: productId,
+                        quantity: 1
+                    });
+                }
+                
+                // Mettre à jour le stockage local
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                // Mettre à jour le compteur du panier
+                updateCartCount();
+                
+                // Afficher une notification
+                alert('Produit ajouté au panier avec succès !');
+            }
+
+            // Fonction pour mettre à jour le compteur du panier
+            function updateCartCount() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                
+                // Mettre à jour le compteur dans la barre de navigation
+                const cartCounts = document.querySelectorAll('.cart-count, .cart-count-floating');
+                cartCounts.forEach(count => {
+                    count.textContent = totalItems;
+                    count.style.display = totalItems > 0 ? 'inline-block' : 'none';
+                });
+            }
+
+            // Initialiser le compteur du panier au chargement de la page
+            document.addEventListener('DOMContentLoaded', updateCartCount);
+        </script>
+    </body>
+</html>

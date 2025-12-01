@@ -1,34 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/user.controller');
+const { verifyToken, isAdmin, isSuperAdmin } = require('../middleware/auth.middleware');
 
+// Routes pour la gestion des utilisateurs (role: user)
+// Accessibles aux admins et superadmins
 
-// Define routes for user operations
+// Récupérer tous les utilisateurs (role: user uniquement)
+router.get('/', verifyToken, isAdmin, userController.getAllUsers);
 
-// Create a new user
-router.post("/", (req, res) => {
-    res.json({message: req.body.message});
-});
+// Récupérer un utilisateur par ID
+router.get('/:id', verifyToken, isAdmin, userController.getUserById);
 
-// Get all users
-router.get("/", (req, res) => {
-    res.json({message: "Here is the list of users from backend!"});
-});
+// Mettre à jour un utilisateur
+router.put('/:id', verifyToken, isAdmin, userController.updateUser);
 
-// Get user by ID
-router.get("/:id", (req, res) => {
-    res.json({message: `Details of user with ID ${req.params.id}`});
-});
+// Supprimer un utilisateur
+router.delete('/:id', verifyToken, isAdmin, userController.deleteUser);
 
-// Update user by ID
-router.put("/:id", (req, res) => {
-    res.json({message: `User with ID ${req.params.id} has been updated!`});
-});
+// Routes pour la gestion des admins
+// Accessibles uniquement aux superadmins
 
-// Delete user by ID
-router.delete("/:id", (req, res) => {
-    res.json({message: `User with ID ${req.params.id} has been deleted!`});
-}); 
-
+// Récupérer tous les admins et superadmins
+router.get('/admins/list', verifyToken, isSuperAdmin, userController.getAllAdmins);
 
 // Export the router to be used in server.js
 module.exports = router;

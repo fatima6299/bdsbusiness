@@ -1,49 +1,39 @@
 const express = require('express');
+const { body } = require('express-validator');
 const router = express.Router();
+const authController = require('../controllers/auth.controller');
+const { verifyToken, isAdmin, isSuperAdmin } = require('../middleware/auth.middleware');
+const validate = require('../middleware/validation.middleware');
+const { auth } = require('../locales');
 
+// Validation rules pour l'inscription
+const registerValidation = [
+  body('firstname').optional().trim().notEmpty().withMessage(auth.firstnameRequired),
+  body('lastname').optional().trim().notEmpty().withMessage(auth.lastnameRequired),
+  body('email').optional().isEmail().withMessage(auth.emailInvalid),
+  body('phone').optional().matches(/^[0-9+\s()-]+$/).withMessage(auth.phoneInvalid),
+  body('password')
+    .isLength({ min: 6 }).withMessage(auth.passwordMinLength)
+    .matches(/[A-Z]/).withMessage(auth.passwordUppercase)
+    .matches(/[a-z]/).withMessage(auth.passwordLowercase)
+    .matches(/[0-9]/).withMessage(auth.passwordNumber)
+];
 
-// Define routes for authentication operations
+// Validation rules pour la connexion
+const loginValidation = [
+  body('identifier').notEmpty().withMessage(auth.identifierRequired),
+  body('password').notEmpty().withMessage(auth.passwordRequired)
+];
 
-// User registration
-router.post("/register", (req, res) => {
-    res.json({message: "User registered successfully!"});
-});
+// Routes publiques
+router.post('/register', registerValidation, validate, authController.register);
+router.post('/login', loginValidation, validate, authController.login);
 
-// User login
-router.post("/login", (req, res) => {
-    res.json({message: "User logged in successfully!"});
-});
+// Routes protégées (nécessitent un token)
+router.get('/profile', verifyToken, authController.getProfile);
 
-// User logout
-router.post("/logout", (req, res) => {
-    res.json({message: "User logged out successfully!"});
-});
-
-// Profile retrieval
-router.get("/profile", (req, res) => {
-    res.json({message: "User profile data!"});
-});
-
-// Profile update
-router.put("/profile", (req, res) => {
-    res.json({message: "User profile updated successfully!"});
-});
-
-// Password change
-router.post("/password-change", (req, res) => {
-    res.json({message: "Password changed successfully!"});
-});
-
-// Password forgot
-router.post("/password-forgot", (req, res) => {
-    res.json({message: "Password reset instructions sent!"});
-});
-
-// Password reset
-router.post("/password-reset", (req, res) => {
-    res.json({message: "Password reset link sent!"});
-});
-
+// Routes admin et superadmin (pour créer des admins)
+router.post('/create-admin', verifyToken, isSuperAdmin, registerValidation, validate, authController.createAdmin);
 
 // Export the router to be used in server.js
 module.exports = router;

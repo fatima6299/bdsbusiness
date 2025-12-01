@@ -32,6 +32,42 @@ router.post('/login', loginValidation, validate, authController.login);
 // Routes protégées (nécessitent un token)
 router.get('/profile', verifyToken, authController.getProfile);
 
+// Mettre à jour son profil
+const updateProfileValidation = [
+  body('firstname').optional().trim().notEmpty().withMessage(auth.firstnameRequired),
+  body('lastname').optional().trim().notEmpty().withMessage(auth.lastnameRequired),
+  body('email').optional().isEmail().withMessage(auth.emailInvalid),
+  body('phone').optional().matches(/^[0-9+\s()-]+$/).withMessage(auth.phoneInvalid)
+];
+router.put('/profile', verifyToken, updateProfileValidation, validate, authController.updateProfile);
+
+// Changer son mot de passe
+const changePasswordValidation = [
+  body('current_password').notEmpty().withMessage(auth.currentPasswordRequired),
+  body('new_password')
+    .isLength({ min: 6 }).withMessage(auth.passwordMinLength)
+    .matches(/[A-Z]/).withMessage(auth.passwordUppercase)
+    .matches(/[a-z]/).withMessage(auth.passwordLowercase)
+    .matches(/[0-9]/).withMessage(auth.passwordNumber)
+];
+router.put('/change-password', verifyToken, changePasswordValidation, validate, authController.changePassword);
+
+// Réinitialisation de mot de passe
+const requestResetValidation = [
+  body('email').isEmail().withMessage(auth.emailInvalid)
+];
+router.post('/request-reset', requestResetValidation, validate, authController.requestPasswordReset);
+
+const resetPasswordValidation = [
+  body('reset_token').notEmpty().withMessage(auth.resetTokenRequired),
+  body('new_password')
+    .isLength({ min: 6 }).withMessage(auth.passwordMinLength)
+    .matches(/[A-Z]/).withMessage(auth.passwordUppercase)
+    .matches(/[a-z]/).withMessage(auth.passwordLowercase)
+    .matches(/[0-9]/).withMessage(auth.passwordNumber)
+];
+router.post('/reset-password', resetPasswordValidation, validate, authController.resetPassword);
+
 // Routes admin et superadmin (pour créer des admins)
 router.post('/create-admin', verifyToken, isSuperAdmin, registerValidation, validate, authController.createAdmin);
 

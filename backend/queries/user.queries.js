@@ -54,6 +54,23 @@ module.exports = {
     SET password = ? 
     WHERE id = ?
   `,
+  
+  updateResetToken: `
+    UPDATE users 
+    SET reset_token = ?, reset_token_expires = ? 
+    WHERE id = ?
+  `,
+  
+  findByResetToken: `
+    SELECT * FROM users 
+    WHERE reset_token = ? AND reset_token_expires > NOW()
+  `,
+  
+  clearResetToken: `
+    UPDATE users 
+    SET reset_token = NULL, reset_token_expires = NULL 
+    WHERE id = ?
+  `,
 
   // Suppression
   deleteUser: `DELETE FROM users WHERE id = ?`

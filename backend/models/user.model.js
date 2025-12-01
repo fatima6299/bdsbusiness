@@ -31,6 +31,12 @@ class User {
     return rows[0];
   }
 
+  // Trouver un utilisateur par ID avec le mot de passe (pour auth)
+  static async findByIdWithPassword(id) {
+    const [rows] = await db.query(queries.findByIdWithPassword, [id]);
+    return rows[0];
+  }
+
   // Vérifier si un email existe déjà
   static async emailExists(email) {
     const [rows] = await db.query(queries.checkEmailExists, [email]);
@@ -52,6 +58,30 @@ class User {
     ]);
     
     return this.findById(id);
+  }
+
+  // Mettre à jour le mot de passe
+  static async updatePassword(id, hashedPassword) {
+    await db.query(queries.updatePassword, [hashedPassword, id]);
+    return true;
+  }
+
+  // Mettre à jour le token de réinitialisation
+  static async updateResetToken(id, resetToken, expiresAt) {
+    await db.query(queries.updateResetToken, [resetToken, expiresAt, id]);
+    return true;
+  }
+
+  // Trouver par token de réinitialisation
+  static async findByResetToken(resetToken) {
+    const [rows] = await db.query(queries.findByResetToken, [resetToken]);
+    return rows[0];
+  }
+
+  // Supprimer le token de réinitialisation
+  static async clearResetToken(id) {
+    await db.query(queries.clearResetToken, [id]);
+    return true;
   }
 
   // Supprimer un utilisateur

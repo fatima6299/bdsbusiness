@@ -5,6 +5,10 @@ module.exports = {
     loginSuccess: 'Connexion réussie.',
     adminCreatedSuccess: 'Administrateur créé avec succès.',
     superAdminCreatedSuccess: 'Super administrateur créé avec succès.',
+    passwordChangedSuccess: 'Mot de passe modifié avec succès.',
+    resetTokenSentSuccess: 'Token de réinitialisation généré avec succès.',
+    passwordResetSuccess: 'Mot de passe réinitialisé avec succès.',
+    profileUpdatedSuccess: 'Profil mis à jour avec succès.',
     
     // Erreurs
     emailAlreadyExists: 'Cet email est déjà utilisé.',
@@ -14,6 +18,12 @@ module.exports = {
     loginError: 'Erreur lors de la connexion.',
     createAdminError: 'Erreur lors de la création de l\'administrateur.',
     profileError: 'Erreur lors de la récupération du profil.',
+    changePasswordError: 'Erreur lors de la modification du mot de passe.',
+    currentPasswordIncorrect: 'Le mot de passe actuel est incorrect.',
+    resetTokenError: 'Erreur lors de la génération du token de réinitialisation.',
+    resetPasswordError: 'Erreur lors de la réinitialisation du mot de passe.',
+    invalidResetToken: 'Token de réinitialisation invalide ou expiré.',
+    updateProfileError: 'Erreur lors de la mise à jour du profil.',
     
     // Validation
     firstnameRequired: 'Le prénom ne peut pas être vide',
@@ -27,6 +37,11 @@ module.exports = {
     roleInvalid: 'Rôle invalide',
     identifierRequired: 'Email ou téléphone requis',
     passwordRequired: 'Mot de passe requis',
+    currentPasswordRequired: 'Le mot de passe actuel est requis',
+    newPasswordRequired: 'Le nouveau mot de passe est requis',
+    passwordsNotMatch: 'Les mots de passe ne correspondent pas',
+    resetTokenRequired: 'Token de réinitialisation requis',
+    emailRequired: 'Email requis pour la réinitialisation',
     
     // Middlewares
     tokenMissing: 'Accès refusé. Token manquant.',
@@ -41,6 +56,10 @@ module.exports = {
     logRegisterError: 'Erreur lors de l\'inscription:',
     logCreateAdminError: 'Erreur lors de la création de l\'admin:',
     logLoginError: 'Erreur lors de la connexion:',
-    logProfileError: 'Erreur lors de la récupération du profil:'
+    logProfileError: 'Erreur lors de la récupération du profil:',
+    logChangePasswordError: 'Erreur lors du changement de mot de passe:',
+    logResetTokenError: 'Erreur lors de la génération du token de réinitialisation:',
+    logResetPasswordError: 'Erreur lors de la réinitialisation du mot de passe:',
+    logUpdateProfileError: 'Erreur lors de la mise à jour du profil:'
   }
 };

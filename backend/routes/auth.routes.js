@@ -41,6 +41,9 @@ const updateProfileValidation = [
 ];
 router.put('/profile', verifyToken, updateProfileValidation, validate, authController.updateProfile);
 
+// Déconnexion
+router.post('/logout', verifyToken, authController.logout);
+
 // Changer son mot de passe
 const changePasswordValidation = [
   body('current_password').notEmpty().withMessage(auth.currentPasswordRequired),

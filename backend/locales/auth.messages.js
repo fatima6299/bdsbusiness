@@ -3,6 +3,7 @@ module.exports = {
     // Succès
     registerSuccess: 'Inscription réussie.',
     loginSuccess: 'Connexion réussie.',
+    logoutSuccess: 'Déconnexion réussie.',
     adminCreatedSuccess: 'Administrateur créé avec succès.',
     superAdminCreatedSuccess: 'Super administrateur créé avec succès.',
     passwordChangedSuccess: 'Mot de passe modifié avec succès.',
@@ -24,6 +25,7 @@ module.exports = {
     resetPasswordError: 'Erreur lors de la réinitialisation du mot de passe.',
     invalidResetToken: 'Token de réinitialisation invalide ou expiré.',
     updateProfileError: 'Erreur lors de la mise à jour du profil.',
+    logoutError: 'Erreur lors de la déconnexion.',
     
     // Validation
     firstnameRequired: 'Le prénom ne peut pas être vide',

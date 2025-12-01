@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/user.model');
 const { auth } = require('../locales');
+const { revokeToken } = require('../utils/tokenBlacklist');
 
 // Inscription d'un nouvel utilisateur (toujours avec role 'user')
 exports.register = async (req, res) => {
@@ -129,7 +130,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Générer le token JWT
+    // Générer le token JWT avec expiration plus courte
     const token = jwt.sign(
       { 
         id: user.id, 
@@ -137,13 +138,14 @@ exports.login = async (req, res) => {
         role: user.role 
       },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      { expiresIn: '2h' } // Token expire dans 2 heures
     );
 
     res.json({
       success: true,
       message: auth.loginSuccess,
       token,
+      expiresIn: '2h', // Informe le client de l'expiration
       user: {
         id: user.id,
         firstname: user.firstname,
@@ -358,6 +360,30 @@ exports.updateProfile = async (req, res) => {
     res.status(500).json({
       success: false,
       message: auth.updateProfileError
+    });
+  }
+};
+
+// Déconnexion (révoque le token)
+exports.logout = async (req, res) => {
+  try {
+    const token = req.token; // Récupéré du middleware verifyToken
+
+    if (token) {
+      // Ajouter le token à la blacklist
+      revokeToken(token);
+      console.log('🔒 Token révoqué pour l\'utilisateur:', req.user.id);
+    }
+
+    res.json({
+      success: true,
+      message: auth.logoutSuccess
+    });
+  } catch (error) {
+    console.error('❌ Erreur lors de la déconnexion:', error);
+    res.status(500).json({
+      success: false,
+      message: auth.logoutError
     });
   }
 };

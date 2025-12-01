@@ -18,6 +18,9 @@ module.exports = {
     cannotDeleteSelf: 'Un super administrateur ne peut pas se supprimer lui-même.',
     cannotDeleteSuperAdmin: 'Un super administrateur ne peut pas supprimer un autre super administrateur.',
     onlySuperAdminCanDeleteAdmin: 'Seul un super administrateur peut supprimer un administrateur.',
+    cannotModifyAdminInfo: 'Vous ne pouvez pas modifier les informations d\'un administrateur.',
+    cannotDeleteYourself: 'Vous ne pouvez pas vous supprimer vous-même.',
+    retrieveAdministratorsError: 'Erreur lors de la récupération des administrateurs.',
     
     // Console logs
     logRetrieveUsersError: 'Erreur lors de la récupération des utilisateurs:',

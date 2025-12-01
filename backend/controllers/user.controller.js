@@ -6,7 +6,9 @@ const db = require('../../config/db');
 // Récupérer tous les utilisateurs (role: user) - Admin et SuperAdmin
 exports.getAllUsers = async (req, res) => {
   try {
-    const [users] = await db.query(queries.findAllUsers, ['user']);
+    // Récupérer tous les utilisateurs et filtrer seulement les users
+    const allUsers = await User.findAll();
+    const users = allUsers.filter(u => u.role === 'user');
 
     res.json({
       success: true,
@@ -14,7 +16,7 @@ exports.getAllUsers = async (req, res) => {
       users
     });
   } catch (error) {
-    console.error(user.logRetrieveUsersError, error);
+    console.error('❌ Erreur lors de la récupération des utilisateurs:', error);
     res.status(500).json({ 
       success: false, 
       message: user.retrieveUsersError 
@@ -25,7 +27,9 @@ exports.getAllUsers = async (req, res) => {
 // Récupérer tous les admins - SuperAdmin uniquement
 exports.getAllAdmins = async (req, res) => {
   try {
-    const [admins] = await db.query(queries.findAllAdmins, ['admin', 'superadmin']);
+    // Récupérer tous les utilisateurs et filtrer les admins
+    const allUsers = await User.findAll();
+    const admins = allUsers.filter(u => u.role === 'admin' || u.role === 'superadmin');
 
     res.json({
       success: true,
@@ -33,10 +37,10 @@ exports.getAllAdmins = async (req, res) => {
       admins
     });
   } catch (error) {
-    console.error(user.logRetrieveAdminsError, error);
+    console.error('❌ Erreur lors de la récupération des administrateurs:', error);
     res.status(500).json({ 
       success: false, 
-      message: user.retrieveAdminsError 
+      message: user.retrieveAdministratorsError 
     });
   }
 };
@@ -45,9 +49,9 @@ exports.getAllAdmins = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const foundUser = await User.findById(id);
 
-    if (!user) {
+    if (!foundUser) {
       return res.status(404).json({ 
         success: false, 
         message: user.userNotFound 
@@ -56,10 +60,10 @@ exports.getUserById = async (req, res) => {
 
     res.json({
       success: true,
-      user
+      user: foundUser
     });
   } catch (error) {
-    console.error(user.logRetrieveUserError, error);
+    console.error('❌ Erreur lors de la récupération de l\'utilisateur:', error);
     res.status(500).json({ 
       success: false, 
       message: user.retrieveUserError 
@@ -88,16 +92,38 @@ exports.updateUser = async (req, res) => {
       if (req.user.role !== 'superadmin') {
         return res.status(403).json({ 
           success: false, 
-          message: user.cannotModifyAdmin 
+          message: user.cannotModifyAdminInfo 
+        });
+      }
+    }
+
+    // Vérifier si l'email est déjà utilisé
+    if (email && email !== userToUpdate.email) {
+      const emailExists = await User.emailExists(email);
+      if (emailExists) {
+        return res.status(400).json({
+          success: false,
+          message: auth.emailAlreadyExists
+        });
+      }
+    }
+
+    // Vérifier si le téléphone est déjà utilisé
+    if (phone && phone !== userToUpdate.phone) {
+      const phoneExists = await User.phoneExists(phone);
+      if (phoneExists) {
+        return res.status(400).json({
+          success: false,
+          message: auth.phoneAlreadyExists
         });
       }
     }
 
     const updatedUser = await User.update(id, {
-      firstname,
-      lastname,
-      email,
-      phone
+      firstname: firstname || userToUpdate.firstname,
+      lastname: lastname || userToUpdate.lastname,
+      email: email || userToUpdate.email,
+      phone: phone || userToUpdate.phone
     });
 
     res.json({
@@ -106,7 +132,7 @@ exports.updateUser = async (req, res) => {
       user: updatedUser
     });
   } catch (error) {
-    console.error(user.logUpdateError, error);
+    console.error('❌ Erreur lors de la mise à jour de l\'utilisateur:', error);
     res.status(500).json({ 
       success: false, 
       message: user.updateUserError 
@@ -132,7 +158,7 @@ exports.deleteUser = async (req, res) => {
     if (userToDelete.role === 'superadmin' && req.user.id === parseInt(id)) {
       return res.status(403).json({ 
         success: false, 
-        message: user.cannotDeleteSelf 
+        message: user.cannotDeleteYourself 
       });
     }
 
@@ -157,12 +183,12 @@ exports.deleteUser = async (req, res) => {
 
     await User.delete(id);
 
-    res.json({
-      success: true,
-      message: user.userDeletedSuccess
+    res.json({ 
+      success: true, 
+      message: user.userDeletedSuccess 
     });
   } catch (error) {
-    console.error(user.logDeleteError, error);
+    console.error('❌ Erreur lors de la suppression de l\'utilisateur:', error);
     res.status(500).json({ 
       success: false, 
       message: user.deleteUserError 

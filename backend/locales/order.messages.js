@@ -18,6 +18,7 @@ module.exports = {
     // Permissions
     unauthorizedAccess: 'Vous n\'avez pas accès à cette commande.',
     cannotCancelOrder: 'Cette commande ne peut plus être annulée.',
+    cannotUpdateOrder: 'Cette commande ne peut plus être modifiée. Seules les commandes en attente peuvent être modifiées.',
     
     // Validation
     paymentStatusInvalid: 'Statut de paiement invalide (pending, paid, failed)'

@@ -1,34 +1,38 @@
 const express = require('express');
+const { body } = require('express-validator');
 const router = express.Router();
+const cartController = require('../controllers/cart.controller');
+const { verifyToken } = require('../middleware/auth.middleware');
+const validate = require('../middleware/validation.middleware');
+const { cart } = require('../locales');
 
+// Validations pour ajouter au panier
+const addToCartValidation = [
+  body('product_id').isInt({ min: 1 }).withMessage(cart.productIdRequired),
+  body('quantity').isInt({ min: 1 }).withMessage(cart.quantityInvalid)
+];
 
-//Define cart-related routes
+// Validations pour mettre à jour la quantité
+const updateQuantityValidation = [
+  body('quantity').isInt({ min: 1 }).withMessage(cart.quantityInvalid)
+];
 
-// Add item to cart
-router.post('/add', (req, res) => {
-    res.json({message: 'Item added to cart'});
-});
+// Toutes les routes du panier sont protégées (utilisateur connecté uniquement)
 
-// Remove item from cart
-router.delete('/remove', (req, res) => {
-    res.json({message: 'Item removed from cart'});
-});
+// Récupérer le panier de l'utilisateur connecté
+router.get('/', verifyToken, cartController.getCart);
 
-// Update item quantity in cart
-router.put('/update', (req, res) => {
-    res.json({message: 'Cart item updated'});
-});
+// Ajouter un produit au panier
+router.post('/', verifyToken, addToCartValidation, validate, cartController.addToCart);
 
-// Clear cart
-router.delete('/clear', (req, res) => {
-    res.json({message: 'Cart cleared'});
-});
+// Mettre à jour la quantité d'un produit dans le panier
+router.put('/:productId', verifyToken, updateQuantityValidation, validate, cartController.updateCartItem);
 
-// Get all items in cart
-router.get('/', (req, res) => {
-    res.json({message: 'Get all items in cart'});
-});
+// Retirer un produit du panier
+router.delete('/:productId', verifyToken, cartController.removeFromCart);
 
+// Vider tout le panier
+router.delete('/', verifyToken, cartController.clearCart);
 
 // Export the router to be used in server.js
 module.exports = router;

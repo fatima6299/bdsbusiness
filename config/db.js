@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Database configuration - MySQL connection pool setup
+ */
+
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 

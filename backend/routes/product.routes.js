@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Product routes - handles product CRUD operations and public product access
+ */
+
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();

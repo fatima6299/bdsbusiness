@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Product SQL queries - all database queries for product operations
+ */
+
 // Requêtes SQL pour la gestion des produits
 
 module.exports = {

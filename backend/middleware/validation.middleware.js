@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Validation middleware - handles request data validation and error formatting
+ */
+
 const { validationResult } = require('express-validator');
 
 // Middleware pour valider les erreurs

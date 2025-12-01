@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User model - handles user data operations and authentication
+ */
+
 const db = require('../../config/db');
 const queries = require('../queries').user;
 

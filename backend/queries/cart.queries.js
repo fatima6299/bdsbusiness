@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Cart SQL queries - all database queries for shopping cart operations
+ */
+
 // Requêtes SQL pour la gestion du panier
 
 module.exports = {

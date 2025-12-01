@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Error handling middleware - centralized error management
+ */
+
 const { common } = require('../locales');
 
 // Middleware de gestion centralisée des erreurs

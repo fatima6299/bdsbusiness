@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Authentication messages - success and error messages for auth operations
+ */
+
 module.exports = {
   auth: {
     // Succès

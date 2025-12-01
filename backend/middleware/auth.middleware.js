@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Authentication middleware - JWT verification and role-based access control
+ */
+
 const jwt = require('jsonwebtoken');
 const { auth } = require('../locales');
 const { isTokenRevoked } = require('../utils/tokenBlacklist');

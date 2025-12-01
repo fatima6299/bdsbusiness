@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Cart model - handles shopping cart data operations
+ */
+
 const db = require('../../config/db');
 const queries = require('../queries').cart;
 

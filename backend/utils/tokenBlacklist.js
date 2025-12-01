@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Token blacklist utility - manages revoked JWT tokens for secure logout
+ */
+
 // Gestion des tokens révoqués (blacklist)
 // En production, utilisez Redis ou une base de données
 

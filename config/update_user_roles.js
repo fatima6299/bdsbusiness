@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User roles update script - adds superadmin role to user table
+ */
+
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 

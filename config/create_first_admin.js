@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Admin creation script - creates the first super administrator
+ */
+
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 require('dotenv').config();

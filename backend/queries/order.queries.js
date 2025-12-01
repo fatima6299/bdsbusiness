@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Order SQL queries - all database queries for order and order items operations
+ */
+
 // Requêtes SQL pour la gestion des commandes
 
 module.exports = {

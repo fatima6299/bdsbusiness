@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User management routes - handles user CRUD operations for admins
+ */
+
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user.controller');

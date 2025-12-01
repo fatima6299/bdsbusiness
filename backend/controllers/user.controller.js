@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User controller - handles user management operations for admins
+ */
+
 const User = require('../models/user.model');
 const { user } = require('../locales');
 const queries = require('../queries').user;

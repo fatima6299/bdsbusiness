@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Order messages - success and error messages for order operations
+ */
+
 module.exports = {
   order: {
     // Succès

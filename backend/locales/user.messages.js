@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User messages - success and error messages for user management operations
+ */
+
 module.exports = {
   user: {
     // Succès

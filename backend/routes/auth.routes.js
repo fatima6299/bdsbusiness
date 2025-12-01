@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Authentication routes - handles auth endpoints and validation
+ */
+
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();

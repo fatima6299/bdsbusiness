@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Product messages - success and error messages for product operations
+ */
+
 module.exports = {
   product: {
     // Succès

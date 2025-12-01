@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Product model - handles product data operations and inventory management
+ */
+
 const db = require('../../config/db');
 const queries = require('../queries').product;
 

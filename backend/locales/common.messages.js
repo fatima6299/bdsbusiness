@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Common messages - general success and error messages shared across modules
+ */
+
 module.exports = {
   common: {
     // Succès généraux

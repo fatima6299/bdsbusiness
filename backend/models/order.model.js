@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Order model - handles order and order items data operations
+ */
+
 const db = require('../../config/db');
 const queries = require('../queries').order;
 

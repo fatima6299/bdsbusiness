@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Order routes - handles order creation, management and admin operations
+ */
+
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();

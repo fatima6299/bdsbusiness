@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: User SQL queries - all database queries for user operations
+ */
+
 // Requêtes SQL pour la gestion des utilisateurs
 
 module.exports = {

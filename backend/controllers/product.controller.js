@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Product controller - handles product CRUD operations, search and filtering
+ */
+
 const Product = require('../models/product.model');
 const { product } = require('../locales');
 

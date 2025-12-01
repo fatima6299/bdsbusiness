@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Main server file for BDS E-commerce API
+ */
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');

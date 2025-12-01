@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Cart messages - success and error messages for shopping cart operations
+ */
+
 module.exports = {
   cart: {
     // Succès

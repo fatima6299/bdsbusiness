@@ -1,3 +1,9 @@
+/**
+ * Author: Saliou Samba DIAO
+ * Created: December 1, 2025
+ * Description: Cart controller - handles shopping cart operations and stock management
+ */
+
 const Cart = require('../models/cart.model');
 const Product = require('../models/product.model');
 const { cart } = require('../locales');

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Commandes - BDS BUSINESS</title>
+  <link rel="stylesheet" href="css/orders.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- En-tête -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo-bdsbusiness.png" alt="BDS BUSINESS Logo" class="logo-img">
+          <span class="logo-text">BDS BUSINESS</span>
+        </a>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="products/abayas.html">Abayas</a></li>
+          <li><a href="products/vetements-homme.html">Vêtements Homme</a></li>
+          <li><a href="products/ordinateurs.html">Ordinateurs</a></li>
+          <li><a href="products/montres.html">Montres</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="login.html" class="account" title="Mon compte"><i class="fas fa-user"></i></a>
+        <a href="cart.html" class="cart" title="Panier">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Titre -->
+  <div class="orders-header">
+    <h1><i class="fas fa-box"></i> Mes Commandes</h1>
+    <p id="orders-count-header">0 commande(s)</p>
+  </div>
+
+  <!-- Contenu -->
+  <div class="orders-container">
+    <div id="orders-content">
+      <!-- Les commandes seront chargées dynamiquement -->
+    </div>
+  </div>
+
+  <!-- Bloc Paiement -->
+  <div class="payment-section">
+    <h2><i class="fas fa-credit-card"></i> Moyens de paiement</h2>
+    <p>Pour régler vos commandes en attente, veuillez utiliser l’un des moyens suivants :</p>
+    <ul>
+      <li><i class="fas fa-mobile-alt"></i> Orange Money : <strong>77 123 45 67</strong></li>
+      <li><i class="fas fa-money-bill-wave"></i> Wave : <strong>78 987 65 43</strong></li>
+    </ul>
+    <p>⚠️ Indiquez toujours votre <strong>numéro de commande</strong> comme référence lors du paiement.</p>
+  </div>
+
+  <!-- Overlay de chargement -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Pied de page -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>BDS BUSINESS</h3>
+          <p>Votre partenaire de confiance pour tous vos achats en ligne.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Liens rapides</h3>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="products/abayas.html">Abayas</a></li>
+            <li><a href="products/vetements-homme.html">Vêtements Homme</a></li>
+            <li><a href="products/ordinateurs.html">Ordinateurs</a></li>
+            <li><a href="products/montres.html">Montres</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Paiements acceptés</h3>
+          <div class="payment-methods">
+            <i class="fas fa-money-bill-wave" title="Wave"></i>
+            <i class="fas fa-mobile-alt" title="Orange Money"></i>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 BDS BUSINESS. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    let ordersData = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!Auth.isAuthenticated()) {
+        alert('Veuillez vous connecter pour voir vos commandes');
+        window.location.href = 'login.html';
+        return;
+      }
+      await loadOrders();
+      updateUserDisplay();
+    });
+
+    async function loadOrders() {
+      showLoading();
+      try {
+        const response = await Orders.getMy(); // ✅ réponse = { success, count, orders }
+        ordersData = response.orders || [];
+        displayOrders(response.count || ordersData.length);
+      } catch (error) {
+        showError('Erreur lors du chargement des commandes');
+      } finally {
+        hideLoading();
+      }
+    }
+
+    function displayOrders(count) {
+      const ordersContent = document.getElementById('orders-content');
+      const ordersCountHeader = document.getElementById('orders-count-header');
+
+      ordersCountHeader.textContent = `${count} commande${count > 1 ? 's' : ''}`;
+
+      if (count === 0) {
+        ordersContent.innerHTML = `
+          <div class="empty-orders">
+            <i class="fas fa-box-open"></i>
+            <h2>Aucune commande</h2>
+            <p>Vous n'avez pas encore passé de commande.</p>
+            <a href="index.html" class="shop-now-btn">
+              <i class="fas fa-shopping-bag"></i> Découvrir nos produits
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      ordersContent.innerHTML = ordersData.map(order => `
+        <div class="order-card">
+          <h3>Commande #${order.id}</h3>
+          <p><strong>Date :</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
+          <p><strong>Status :</strong> ${order.payment_status}</p>
+          <p><strong>Total :</strong> ${formatPrice(order.total_amount)} FCFA</p>
+          <p><strong>Client :</strong> ${order.firstname} ${order.lastname} (${order.email})</p>
+        </div>
+      `).join('');
+    }
+
+    function formatPrice(price) {
+      return parseFloat(price).toLocaleString('fr-FR');
+    }
+
+    function showLoading() {
+      document.getElementById('loadingOverlay').classList.add('active');
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').classList.remove('active');
+    }
+
+    function showError(message) {
+      document.getElementById('orders-content').innerHTML = `
+        <div class="empty-orders">
+          <i class="fas fa-exclamation-triangle" style="color: #f44336;"></i>
+          <h2>Erreur</h2>
+          <p>${message}</p>
+          <button onclick="loadOrders()" class="shop-now-btn">
+            <i class="fas fa-redo"></i> Réessayer
+          </button>
+        </div>
+      `;
+    }
+
+    function updateUserDisplay() {
+      const user = Auth.getCurrentUser();
+      const accountLink = document.querySelector('.account');
+      if (user && accountLink) {
+        accountLink.title = user.firstname;
+        accountLink.href = 'profile.html';
+      }
+    }
+  </script>
+</body>
+</html>

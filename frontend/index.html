@@ -29,7 +29,7 @@
             
             <div class="header-actions">
                 <a href="#compte" class="account" title="Mon compte"><i class="fas fa-user"></i></a>
-                <a href="#panier" class="cart" title="Panier">
+                <a href="cart.html" class="cart" title="Panier">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </a>
@@ -231,11 +231,11 @@
     </footer>
 
     <!-- Bouton panier flottant -->
-    <div class="cart-floating">
+    <div class="cart-floating" onclick="window.location.href='cart.html'">
         <i class="fas fa-shopping-cart"></i>
         <span class="cart-count-floating">0</span>
     </div>
-
+    <script src="js/api.js"></script>
     <script src="js/main.js"></script>
     <script src="js/hero.js"></script>
 </body>

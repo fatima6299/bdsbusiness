@@ -1,4 +1,4 @@
-// Hero Slider
+// Hero Slider 
 class HeroSlider {
     constructor() {
         this.slides = document.querySelectorAll('.hero-slide');
@@ -44,7 +44,7 @@ class HeroSlider {
         
         slider.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe();
+            this.handleSwipe(touchStartX, touchEndX);
             this.startSlideShow();
         }, false);
     }
@@ -88,30 +88,52 @@ class HeroSlider {
         clearInterval(this.slideInterval);
     }
     
-    handleSwipe() {
-        const SWIPE_THRESHOLD = 50; // Minimum distance to consider it a swipe
+    handleSwipe(touchStartX, touchEndX) {
+        const SWIPE_THRESHOLD = 50;
         
         if (touchStartX - touchEndX > SWIPE_THRESHOLD) {
-            // Swipe left - next slide
             this.nextSlide();
         } else if (touchEndX - touchStartX > SWIPE_THRESHOLD) {
-            // Swipe right - previous slide
             this.prevSlide();
         }
     }
 }
 
-// Featured Products
+// Featured Products - NOUVELLE VERSION AVEC API
 class FeaturedProducts {
     constructor() {
         this.productsContainer = document.querySelector('.featured-grid');
-        this.products = [
+        this.products = [];
+        this.init();
+    }
+    
+    async init() {
+        await this.loadProducts();
+        this.renderProducts();
+        this.addEventListeners();
+    }
+    
+    async loadProducts() {
+        try {
+            // Charger depuis l'API backend
+            const response = await Products.getAll();
+            // Prendre les 4 premiers produits pour la section featured
+            this.products = (response.products || []).slice(0, 4);
+        } catch (error) {
+            console.error('Erreur chargement produits featured:', error);
+            // Fallback sur des données par défaut
+            this.products = this.getDefaultProducts();
+        }
+    }
+    
+    getDefaultProducts() {
+        return [
             {
                 id: 1,
                 name: 'Abaya Noire Élégante',
                 category: 'Abayas',
                 price: 45000,
-                originalPrice: 60000,
+                oldPrice: 60000,
                 image: 'images/abaya1.jpg',
                 isNew: true,
                 discount: 25
@@ -129,7 +151,7 @@ class FeaturedProducts {
                 name: 'MacBook Air M1',
                 category: 'Ordinateurs',
                 price: 650000,
-                originalPrice: 750000,
+                oldPrice: 750000,
                 image: 'images/macbook.jpg',
                 discount: 13
             },
@@ -142,52 +164,54 @@ class FeaturedProducts {
                 isNew: true
             }
         ];
-        
-        this.init();
-    }
-    
-    init() {
-        this.renderProducts();
-        this.addEventListeners();
     }
     
     renderProducts() {
-        this.productsContainer.innerHTML = this.products.map(product => `
-            <div class="product-card" data-id="${product.id}">
-                ${product.isNew ? '<span class="product-badge">Nouveau</span>' : ''}
-                ${product.discount ? `<span class="product-badge" style="background: #ff4757;">-${product.discount}%</span>` : ''}
-                <img src="${product.image}" alt="${product.name}" class="product-image">
-                <div class="product-info">
-                    <div class="product-category">${product.category}</div>
-                    <h3 class="product-title">${product.name}</h3>
-                    <div class="product-price">
-                        <span class="current-price">${this.formatPrice(product.price)} FCFA</span>
-                        ${product.originalPrice ? `<span class="original-price">${this.formatPrice(product.originalPrice)} FCFA</span>` : ''}
-                    </div>
-                    <div class="product-actions">
-                        <button class="add-to-cart" data-id="${product.id}">
-                            <i class="fas fa-shopping-cart"></i> Ajouter
-                        </button>
-                        <button class="add-to-wishlist" data-id="${product.id}">
-                            <i class="far fa-heart"></i>
-                        </button>
+        if (!this.productsContainer) return;
+        
+        this.productsContainer.innerHTML = this.products.map(product => {
+            const price = product.price || product.discounted_price || 0;
+            const oldPrice = product.oldPrice || (product.price > product.discounted_price ? product.price : null);
+            const discount = product.discount || product.discount_percent || 0;
+            const image = product.images?.[0] || product.image_url || product.image || 'images/placeholder.jpg';
+            
+            return `
+                <div class="product-card" data-id="${product.id}">
+                    ${product.isNew ? '<span class="product-badge">Nouveau</span>' : ''}
+                    ${discount > 0 ? `<span class="product-badge" style="background: #ff4757;">-${discount}%</span>` : ''}
+                    <img src="${image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">
+                            <span class="current-price">${this.formatPrice(price)} FCFA</span>
+                            ${oldPrice ? `<span class="original-price">${this.formatPrice(oldPrice)} FCFA</span>` : ''}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" data-id="${product.id}">
+                                <i class="fas fa-shopping-cart"></i> Ajouter
+                            </button>
+                            <button class="add-to-wishlist" data-id="${product.id}">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
     
     addEventListeners() {
         // Add to cart
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', (e) => {
+        document.querySelectorAll('.featured-grid .add-to-cart').forEach(button => {
+            button.addEventListener('click', async (e) => {
                 const productId = e.target.closest('button').dataset.id;
-                this.addToCart(productId);
+                await this.addToCart(productId);
             });
         });
         
         // Add to wishlist
-        document.querySelectorAll('.add-to-wishlist').forEach(button => {
+        document.querySelectorAll('.featured-grid .add-to-wishlist').forEach(button => {
             button.addEventListener('click', (e) => {
                 const button = e.target.closest('button');
                 const productId = button.dataset.id;
@@ -196,15 +220,25 @@ class FeaturedProducts {
         });
     }
     
-    addToCart(productId) {
-        // Here you would typically add the product to the cart
-        console.log(`Added product ${productId} to cart`);
+    async addToCart(productId) {
+        // Vérifier si l'utilisateur est connecté
+        if (!Auth.isAuthenticated()) {
+            this.showNotification('Veuillez vous connecter pour ajouter au panier', 'warning');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+            return;
+        }
         
-        // Show notification
-        this.showNotification('Produit ajouté au panier');
-        
-        // Update cart count
-        this.updateCartCount();
+        try {
+            // Ajouter au panier via l'API
+            await Cart.add(productId, 1);
+            this.showNotification('Produit ajouté au panier !', 'success');
+            this.updateCartCount();
+        } catch (error) {
+            console.error('Erreur:', error);
+            this.showNotification('Erreur lors de l\'ajout au panier', 'error');
+        }
     }
     
     toggleWishlist(button, productId) {
@@ -214,26 +248,29 @@ class FeaturedProducts {
         if (button.classList.contains('active')) {
             icon.classList.remove('far');
             icon.classList.add('fas', 'text-danger');
-            this.showNotification('Ajouté aux favoris');
+            this.showNotification('Ajouté aux favoris', 'success');
         } else {
             icon.classList.remove('fas', 'text-danger');
             icon.classList.add('far');
         }
     }
     
-    updateCartCount() {
-        const countElements = document.querySelectorAll('.cart-count, .cart-count-floating');
-        let currentCount = parseInt(countElements[0].textContent) || 0;
-        const newCount = currentCount + 1;
-        
-        countElements.forEach(element => {
-            element.textContent = newCount;
-            element.style.display = 'flex';
-        });
+    async updateCartCount() {
+        try {
+            const cartData = await Cart.get();
+            const countElements = document.querySelectorAll('.cart-count, .cart-count-floating');
+            const newCount = cartData.count || 0;
+            
+            countElements.forEach(element => {
+                element.textContent = newCount;
+                element.style.display = newCount > 0 ? 'flex' : 'none';
+            });
+        } catch (error) {
+            console.error('Erreur mise à jour panier:', error);
+        }
     }
     
-    showNotification(message) {
-        // Create notification element if it doesn't exist
+    showNotification(message, type = 'success') {
         let notification = document.querySelector('.notification');
         
         if (!notification) {
@@ -241,7 +278,6 @@ class FeaturedProducts {
             notification.className = 'notification';
             document.body.appendChild(notification);
             
-            // Add styles
             const style = document.createElement('style');
             style.textContent = `
                 .notification {
@@ -252,26 +288,30 @@ class FeaturedProducts {
                     background: #4CAF50;
                     color: white;
                     padding: 15px 25px;
-                    border-radius: 4px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                    z-index: 1000;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    z-index: 10000;
                     opacity: 0;
                     transition: all 0.3s ease;
                 }
-                
                 .notification.show {
                     transform: translateX(-50%) translateY(0);
                     opacity: 1;
+                }
+                .notification.warning {
+                    background: #ff9800;
+                }
+                .notification.error {
+                    background: #f44336;
                 }
             `;
             document.head.appendChild(style);
         }
         
-        // Update notification content
+        notification.className = `notification ${type}`;
         notification.textContent = message;
         notification.classList.add('show');
         
-        // Hide notification after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
         }, 3000);

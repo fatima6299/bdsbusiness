@@ -1,0 +1,95 @@
+<!-- delivery.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informations de livraison - BDS BUSINESS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/delivery.css">
+</head>
+<body>
+  <!-- Header (identique aux autres pages) -->
+  <header class="header">
+    <!-- ... contenu du header existant ... -->
+  </header>
+
+  <div class="container">
+    <div class="checkout-steps">
+      <div class="step active">
+        <span class="step-number">1</span>
+        <span class="step-text">Livraison</span>
+      </div>
+      <div class="step">
+        <span class="step-number">2</span>
+        <span class="step-text">Paiement</span>
+      </div>
+      <div class="step">
+        <span class="step-number">3</span>
+        <span class="step-text">Confirmation</span>
+      </div>
+    </div>
+
+    <div class="delivery-container">
+      <h1><i class="fas fa-truck"></i> Informations de livraison</h1>
+      
+      <div class="delivery-info">
+        <div class="delivery-estimate">
+          <i class="fas fa-clock"></i>
+          <p>Délai de livraison estimé : <strong>2 à 5 jours ouvrables</strong></p>
+        </div>
+
+        <form id="deliveryForm" class="delivery-form">
+          <div class="form-group">
+            <label for="fullName">Nom complet *</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Téléphone *</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Adresse complète *</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="city">Ville *</label>
+            <input type="text" id="city" name="city" required>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Notes de livraison (optionnel)</label>
+            <textarea id="notes" name="notes" rows="2"></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-arrow-right"></i> Procéder au paiement
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Sauvegarder les informations de livraison
+      const deliveryInfo = {
+        fullName: document.getElementById('fullName').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        notes: document.getElementById('notes').value
+      };
+      localStorage.setItem('deliveryInfo', JSON.stringify(deliveryInfo));
+      
+      // Rediriger vers la page de paiement
+      window.location.href = 'confirmation.html';
+    });
+  </script>
+</body>
+</html>

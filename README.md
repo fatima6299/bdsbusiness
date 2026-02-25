@@ -547,7 +547,7 @@ Content-Type: application/json
 | Gérer le panier | ✅ | ✅ | ✅ |
 | Passer des commandes | ✅ | ✅ | ✅ |
 | Voir ses commandes | ✅ | ✅ | ✅ |
-| Gérer les produits | ❌ | ✅ | ✅ |
+| Gérer les produits | ❌ | ✅ | ✅ 
 | Voir tous les utilisateurs | ❌ | ✅ | ✅ |
 | Modifier les utilisateurs | ❌ | ✅* | ✅ |
 | Voir toutes les commandes | ❌ | ✅ | ✅ |

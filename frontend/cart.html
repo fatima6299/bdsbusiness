@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Panier - BDS BUSINESS</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .cart-container {
@@ -572,16 +573,23 @@
                 return;
             }
 
-            if (!confirm(`Confirmer la commande de ${formatPrice(cartData.total)} FCFA ?`)) return;
+    
 
             showLoading();
             try {
-                const order = await Orders.create('pending');
-                showNotification('Commande créée avec succès !', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = 'orders.html';
-                }, 1500);
+                const currentCart = await Cart.get();
+                if (!currentCart.success || currentCart.count === 0) {
+                    showNotification('Votre panier est vide', 'warning');
+                    hideLoading();
+                    await loadCart();
+                    return;
+                }
+                console.log('✅ Panier vérifié, redirection vers delivery.html');
+                console.log('📦 Articles:', currentCart.count);
+                console.log('💰 Total:', currentCart.total, 'FCFA');
+              
+                window.location.href = 'delivery.html';
+               
             } catch (error) {
                 showNotification(error.message || 'Erreur lors de la création de la commande', 'error');
                 hideLoading();

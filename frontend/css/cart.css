@@ -220,8 +220,8 @@
 /* Bouton panier flottant */
 .cart-floating {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 15px;
+    right: 15px;
     width: 60px;
     height: 60px;
     background: #2c3e50;

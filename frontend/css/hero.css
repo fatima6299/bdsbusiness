@@ -52,7 +52,7 @@
 }
 
 .hero-content {
-    max-width: 50%;
+    max-width: 95%;
     color: #fff;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
     z-index: 2;
@@ -233,6 +233,14 @@
         width: 40px;
         height: 40px;
         font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-nav button {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
     }
 }
 

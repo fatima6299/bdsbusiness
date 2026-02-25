@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BDS BUSINESS - Votre Boutique en Ligne</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -28,12 +30,49 @@
             </div>
             
             <div class="header-actions">
-                <a href="#compte" class="account" title="Mon compte"><i class="fas fa-user"></i></a>
+                <a href="#" class="account" id="accountLink" title="Mon compte">
+                    <i class="fas fa-user"></i>
+                </a>
                 <a href="cart.html" class="cart" title="Panier">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </a>
             </div>
+            <!-- Menu déroulant utilisateur -->
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span id="userGreeting">Bonjour, Identifiez-vous</span>
+                    <span class="user-email hidden" id="userEmail"></span>
+                </div>
+            </div>
+            <div class="user-menu-links">
+                <a href="profile.html"><i class="fas fa-user-circle"></i> Mon Compte</a>
+                <a href="orders.html"><i class="fas fa-shopping-bag"></i> Mes Commandes</a>
+                <a href="wishlist.html"><i class="fas fa-heart"></i> Ma Liste d'envies</a>
+                <div class="menu-divider"></div>
+                <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Se connecter</a>
+                <a href="register.html" id="registerLink"><i class="fas fa-user-plus"></i> S'inscrire</a>
+                <a href="#" id="logoutLink" class="hidden"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+            </div>
+        </div>
+            <script>
+                // Vérifier si l'utilisateur est connecté au chargement
+                document.addEventListener('DOMContentLoaded', () => {
+                    const accountLink = document.getElementById('accountLink');
+                    
+                    // Vérifier si l'utilisateur est connecté
+                    const token = localStorage.getItem('bds_token');
+                    if (!token) {
+                        // Rediriger vers la page de connexion si non connecté
+                        accountLink.href = 'login.html';
+                        accountLink.title = 'Se connecter';
+                    }
+                });
+            </script>
         </div>
     </header>
 
@@ -236,6 +275,7 @@
         <span class="cart-count-floating">0</span>
     </div>
     <script src="js/api.js"></script>
+    <script src="js/account.js"></script>
     <script src="js/main.js"></script>
     <script src="js/hero.js"></script>
 </body>

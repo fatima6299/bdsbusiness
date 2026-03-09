@@ -49,14 +49,3 @@ jobs:
           tags: |
             ftd6299/bdsbusiness:latest
             ftd6299/bdsbusiness:${{ github.sha }}
-```
-
-Sauvegarde et ferme.
-
----
-
-**Pourquoi ce pipeline est mieux :**
-```
-Job 1 : Tests        → Trivy scanne les failles
-    ↓ si OK
-Job 2 : Build/Push   → Image envoyée sur Docker Hub

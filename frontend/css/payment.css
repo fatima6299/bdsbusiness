@@ -4,6 +4,52 @@
   justify-content: center;
   margin: 40px 0;
   gap: 20px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .checkout-steps {
+    margin: 30px 0;
+    gap: 15px;
+  }
+  
+  .step {
+    min-width: 80px;
+    font-size: 13px;
+  }
+  
+  .step:not(:last-child)::after {
+    width: 40%;
+  }
+  
+  .step-number {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-steps {
+    margin: 20px 0;
+    gap: 10px;
+  }
+  
+  .step {
+    min-width: 70px;
+    font-size: 11px;
+  }
+  
+  .step:not(:last-child)::after {
+    display: none;
+  }
+  
+  .step-number {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
 }
 
 .step {
@@ -62,11 +108,44 @@
   padding: 0 20px;
 }
 
+@media (max-width: 992px) {
+  .payment-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-container {
+    padding: 0 15px;
+    margin: 0 auto 40px;
+  }
+}
+
+@media (max-width: 576px) {
+  .payment-container {
+    padding: 0 10px;
+    margin: 0 auto 30px;
+  }
+}
+
 .payment-methods, .order-summary {
   background: white;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 768px) {
+  .payment-methods, .order-summary {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .payment-methods, .order-summary {
+    padding: 15px;
+  }
 }
 
 .payment-options {
@@ -98,8 +177,37 @@
   width: 60px;
   height: 40px;
   object-fit: contain;
-  margin-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+  .payment-option {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .payment-option img {
+    width: 50px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-options {
+    gap: 10px;
+  }
+  
+  .payment-option {
+    padding: 10px;
+    font-size: 12px;
+  }
+  
+  .payment-option img {
+    width: 40px;
+    height: 25px;
+  }
+}
+ /* margin-bottom: 10px; */
+
 
 .payment-option span {
   display: block;

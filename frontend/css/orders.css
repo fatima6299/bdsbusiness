@@ -5,6 +5,18 @@
   margin: auto;
 }
 
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 30px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-container {
+    padding: 20px 10px;
+  }
+}
+
 /* === Carte de commande === */
 .order-card {
   background: #fff;
@@ -13,6 +25,39 @@
   padding: 20px;
   margin-bottom: 30px;
   transition: box-shadow 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+  
+  .order-card h3 {
+    font-size: 18px;
+  }
+  
+  .order-card p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-card {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .order-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .order-card p {
+    font-size: 13px;
+    margin: 3px 0;
+  }
 }
 
 .order-card:hover {
@@ -75,6 +120,45 @@
   margin: 40px auto;
   border-radius: 8px;
   max-width: 1000px;
+}
+
+@media (max-width: 768px) {
+  .payment-section {
+    padding: 30px 15px;
+    margin: 30px auto;
+  }
+  
+  .payment-section h2 {
+    font-size: 20px;
+  }
+  
+  .payment-section li {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-section {
+    padding: 20px 12px;
+    margin: 20px auto;
+    border-radius: 6px;
+  }
+  
+  .payment-section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  .payment-section li {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  
+  .payment-section p {
+    font-size: 13px;
+    margin-top: 8px;
+  }
 }
 
 .payment-section h2 {

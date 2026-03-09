@@ -106,3 +106,68 @@
 .hidden {
     display: none !important;
 }
+
+/* Media queries pour responsivité */
+@media (max-width: 768px) {
+    .user-menu {
+        width: 90vw;
+        max-width: 280px;
+        right: 10px;
+    }
+    
+    .user-menu-header {
+        padding: 12px;
+    }
+    
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
+    }
+    
+    .user-avatar i {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .user-menu {
+        width: 95vw;
+        max-width: 250px;
+    }
+    
+    .user-menu-links a {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .user-menu-links i {
+        width: 20px;
+        margin-right: 10px;
+        font-size: 16px;
+    }
+    
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* FTD */
+@media (max-width: 768px) {
+    .user-menu {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .user-menu {
+        width: 90vw;
+        max-width: 250px;
+    }
+    
+    .user-menu-links a {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}

@@ -17,7 +17,7 @@ pipeline {
 
         stage('Tests Unitaires') {
             steps {
-                echo '🧪 Lancement des tests...'
+                echo '🧪 Installation des dependances...'
                 sh 'npm install'
                 sh 'npm test --if-present'
             }
